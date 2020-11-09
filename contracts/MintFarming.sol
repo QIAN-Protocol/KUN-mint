@@ -212,6 +212,7 @@ contract MintFarming is EventHandler, VersionedInitializable {
 
     address public kun;
     address public main;
+    address public broker;
 
     uint256 public closingTime;
     uint256 public openingTime;
@@ -238,11 +239,13 @@ contract MintFarming is EventHandler, VersionedInitializable {
     function initialize(
         address _governance,
         address _kun,
-        address _main
+        address _main,
+        address _broker
     ) public initializer {
         governance = _governance;
         kun = _kun;
         main = _main;
+        broker = _broker;
     }
 
     function notifyOpeningTime(uint256 _openingTime) public onlyGovernance {
@@ -308,6 +311,7 @@ contract MintFarming is EventHandler, VersionedInitializable {
         bytes32 topic, //topic
         bytes memory data
     ) public {
+        require(msg.sender == broker, "only broker");
         require(publisher == main, "unsubscribed publisher");
         require(topic == keccak256("mint"), "only topic: mint");
 
@@ -327,6 +331,7 @@ contract MintFarming is EventHandler, VersionedInitializable {
         bytes32 topic, //topic
         bytes memory data
     ) public {
+        require(msg.sender == broker, "only broker");
         require(publisher == main, "unsubscribed publisher");
         require(topic == keccak256("open"), "only topic: mint");
 
@@ -347,6 +352,7 @@ contract MintFarming is EventHandler, VersionedInitializable {
         bytes32 topic, //topic
         bytes memory data
     ) public {
+        require(msg.sender == broker, "only broker");
         require(publisher == main, "unsubscribed publisher");
         require(topic == keccak256("burn"), "only topic: burn");
 
