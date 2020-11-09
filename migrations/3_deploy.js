@@ -20,7 +20,7 @@ module.exports = async function (deployer, network) {
 
     var mintfarming = await deployProxy(
         MintFarming,
-        [deployenv.governance, deployenv.kun, deployenv.main],
+        [deployenv.governance, deployenv.kun, deployenv.main, deployenv.broker],
         {
             deployer: deployer,
             unsafeAllowCustomTypes: true,
